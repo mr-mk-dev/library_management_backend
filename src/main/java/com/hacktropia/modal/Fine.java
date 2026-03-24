@@ -28,11 +28,13 @@ public class Fine {
     @ManyToOne
     private BookLoan bookLoan;
 
+    @Enumerated(EnumType.STRING)
     private FineType type;
 
     @Column(nullable = false)
     private Long amount;
 
+    @Enumerated(EnumType.STRING)
     private FineStatus status;
 
     @Column(length = 500)
@@ -44,20 +46,15 @@ public class Fine {
     @ManyToOne
     private Users waivedBy;
 
-    @Column(name = "waived_at")
     private LocalDateTime waivedAt;
 
-    @Column(name = "waived_reason", length = 500)
     private String waiverReason;
 
-    @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "processed_by_user_id")
     private Users processedBy;
 
-    @Column(name = "transaction_id", length = 100)
     private String transactionId;
 
     @Column(nullable = false,updatable = false)

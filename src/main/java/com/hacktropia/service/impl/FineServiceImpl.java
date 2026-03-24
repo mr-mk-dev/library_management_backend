@@ -119,19 +119,19 @@ public class FineServiceImpl implements FineService {
         List<Fine> fines;
 
         if(status != null && type!= null){
-            fines=fineRepository.findByUserId(currentUsers.getId()).stream()
+            fines=fineRepository.findByUsersId(currentUsers.getId()).stream()
                     .filter(f -> f.getStatus()==status && f.getType()==type)
                     .collect(Collectors.toList());
         } else if (status!=null) {
-            fines=fineRepository.findByUserId(currentUsers.getId()).stream()
+            fines=fineRepository.findByUsersId(currentUsers.getId()).stream()
                     .filter(f-> f.getStatus()==status)
                     .collect(Collectors.toList());
 
         }else if(type!=null){
-            fines=fineRepository.findByUserIdAndType(currentUsers.getId(),type);
+            fines=fineRepository.findByUsersIdAndType(currentUsers.getId(),type);
 
         }else {
-            fines=fineRepository.findByUserId(currentUsers.getId());
+            fines=fineRepository.findByUsersId(currentUsers.getId());
         }
         return fines.stream().map(
                 fineMapper::toDTO

@@ -2,6 +2,8 @@ package com.hacktropia.payload.dto;
 
 
 import com.hacktropia.domain.ReservationStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

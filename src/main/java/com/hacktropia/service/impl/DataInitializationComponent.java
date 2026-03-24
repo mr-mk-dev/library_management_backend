@@ -29,7 +29,7 @@ public class DataInitializationComponent implements CommandLineRunner {
                             .password(passwordEncoder.encode(adminPassword))
                             .email(adminEmail)
                             .fullName("Hacktropia")
-                            .role(UserRole.ROLE_ADMIN)
+                            .role(UserRole.ADMIN)
                             .build();
 
                     Users admin=userRepository.save(users);

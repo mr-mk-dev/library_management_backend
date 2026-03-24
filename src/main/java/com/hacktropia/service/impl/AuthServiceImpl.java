@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
         createdUsers.setPhone(req.getPhone());
         createdUsers.setFullName(req.getFullName());
         createdUsers.setLastLogin(LocalDateTime.now());
-        createdUsers.setRole(UserRole.ROLE_USER);
+        createdUsers.setRole(UserRole.USER);
 
         Users savedUsers =userRepository.save(createdUsers);
         Authentication auth= new UsernamePasswordAuthenticationToken(

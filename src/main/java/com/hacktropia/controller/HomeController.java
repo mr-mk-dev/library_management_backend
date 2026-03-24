@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping
-    public ResponseEntity<String> HomeController() {
+    public ResponseEntity<String> localhostCheckpoint() {
         return ResponseEntity.ok("welcome to library management system");
+    }
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck(){
+        return  ResponseEntity.ok("Library management server is running...");
     }
 }

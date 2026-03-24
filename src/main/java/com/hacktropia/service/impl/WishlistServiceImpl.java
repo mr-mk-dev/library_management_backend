@@ -36,7 +36,7 @@ public class WishlistServiceImpl implements WishlistService {
         Book book=bookRepository.findById(bookId)
                 .orElseThrow(()-> new Exception("Book not found"));
 
-        if(wishlistRepository.existsByUserIdAndBookId(users.getId(),bookId)){
+        if(wishlistRepository.existsByUsersIdAndBookId(users.getId(),bookId)){
             throw new Exception("book is already in your wishlist");
         }
 
@@ -52,7 +52,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public void removeFromWishlist(Long bookId) throws Exception {
         Users users =userService.getCurrentUser();
-        Wishlist wishlist=wishlistRepository.findByUserIdAndBookId(users.getId(), bookId);
+        Wishlist wishlist=wishlistRepository.findByUsersIdAndBookId(users.getId(), bookId);
         if(wishlist==null){
             throw new Exception("book is not in your wishlist");
         }
@@ -64,7 +64,7 @@ public class WishlistServiceImpl implements WishlistService {
     public PageResponse<WishlistDTO> getMyWishlist(int page, int size) throws Exception {
         Long userId=userService.getCurrentUser().getId();
         Pageable pageable= PageRequest.of(page,size, Sort.by("addedAt").descending());
-        Page<Wishlist> wishlistPage=wishlistRepository.findByUserId(userId,pageable);
+        Page<Wishlist> wishlistPage=wishlistRepository.findByUsersId(userId,pageable);
         return convertToPageResponse(wishlistPage);
     }
 

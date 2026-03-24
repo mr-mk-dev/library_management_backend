@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
-    @Query("select s from Subscription s where s.user.id= :userId AND " +
+    @Query("select s from Subscription s where s.users.id= :userId AND " +
             "s.isActive = true and " +
             "s.startDate<=:today and s.endDate>=:today"
     )

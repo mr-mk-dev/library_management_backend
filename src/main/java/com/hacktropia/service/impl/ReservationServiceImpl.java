@@ -48,7 +48,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public ReservationDTO createReservationForUser(ReservationRequest reservationRequest, Long userId) throws Exception {
-       boolean alreadyHasLoan=bookLoanRepository.existsByUserIdAndBookIdAndStatus(
+       boolean alreadyHasLoan=bookLoanRepository.existsByUsersIdAndBookIdAndStatus(
                userId,reservationRequest.getBookId(), BookLoanStatus.CHECKED_OUT
        );
        if(alreadyHasLoan){
@@ -97,7 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         Users currentUsers =userService.getCurrentUser();
         if(!reservation.getUsers().getId().equals(currentUsers.getId())
-        && currentUsers.getRole()!= UserRole.ROLE_ADMIN){
+        && currentUsers.getRole()!= UserRole.ADMIN){
             throw new Exception("You can only cancel your own reservations");
         }
         if(!reservation.canBeCancelled()){

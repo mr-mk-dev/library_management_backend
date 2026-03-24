@@ -40,7 +40,7 @@ public class BookReviewServiceImpl implements BookReviewService {
         Users users =userService.getCurrentUser();
         Book book=bookRepository.findById(request.getBookId())
                 .orElseThrow(()-> new Exception("book not found!"));
-        if(bookReviewRepository.existsByUserIdAndBookId(users.getId(),book.getId())){
+        if(bookReviewRepository.existsByUsersIdAndBookId(users.getId(),book.getId())){
             throw new Exception("you have already reviewed this book!");
         }
         boolean hasReadBook=hasUserReadBook(users.getId(),book.getId());

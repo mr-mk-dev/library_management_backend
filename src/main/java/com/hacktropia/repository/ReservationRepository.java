@@ -8,9 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 //
@@ -23,11 +20,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 //    Optional<Reservation> findNextPendingReservation(@Param("bookId") Long bookId);
 
     @Query(" SELECT CASE WHEN COUNT(r)>0 THEN true ELSE false END FROM Reservation r" +
-            " WHERE r.user.id= :userId AND r.book.id= :bookId " +
+            " WHERE r.users.id= :userId AND r.book.id= :bookId " +
             " AND (r.status = 'PENDING' OR r.status='AVAILABLE')")
     boolean hasActiveReservation(@Param("userId") Long userId, @Param("bookId") Long bookId);
 
-    @Query(" SELECT COUNT(r) FROM Reservation r WHERE r.user.id=:userId"+
+    @Query(" SELECT COUNT(r) FROM Reservation r WHERE r.users.id=:userId"+
             " AND (r.status='PENDING' OR r.status='AVAILABLE')")
     long countActiveReservationsByUser(@Param("userId") Long userId);
 
@@ -36,7 +33,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             " AND r.status='PENDING'")
     long countPendingReservationsByBook(@Param("bookId") Long bookId);
 
-//
+/*
 //    @Query(" SELECT r FROM Reservation r WHERE r.status='AVAILABLE'"+
 //            " AND r.availableUntil<:currentDateTime")
 //    List<Reservation> findExpiredReservations(@Param("currentDateTime") LocalDateTime currentDateTime);
@@ -48,9 +45,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 //            @Param("userId") Long userId,
 //            @Param("bookId") Long bookId
 //    );
+ */
 
     @Query("SELECT r FROM Reservation r WHERE " +
-    "(:userId IS NULL OR r.user.id= :userId) AND "+
+    "(:userId IS NULL OR r.users.id= :userId) AND "+
     "(:bookId IS NULL OR r.book.id= :bookId) AND " +
     "(:status IS NULL OR r.status=:status) AND " +
     "(:activeOnly = false OR (r.status='PENDING' OR r.status='AVAILABLE'))")

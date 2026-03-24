@@ -161,12 +161,12 @@ public class BookLoanServiceImpl implements BookLoanService {
         Page<BookLoan> bookLoanPage;
         if(status!=null){
             Pageable  pageable= PageRequest.of(page,size, Sort.by("dueDate").ascending());
-            bookLoanPage=bookLoanRepository.findByStatusAndUser(
+            bookLoanPage=bookLoanRepository.findByStatusAndUsers(
                     status, currentUsers,pageable
             );
         }else {
             Pageable  pageable= PageRequest.of(page,size, Sort.by("createdAt").descending());
-            bookLoanPage=bookLoanRepository.findByUserId(currentUsers.getId(),pageable);
+            bookLoanPage=bookLoanRepository.findByUsersId(currentUsers.getId(),pageable);
 
         }
         return convertToPageResponse(bookLoanPage);
@@ -187,7 +187,7 @@ public class BookLoanServiceImpl implements BookLoanService {
         if(Boolean.TRUE.equals(searchRequest.getOverdueOnly())){
             bookLoanPage=bookLoanRepository.findOverdueBookLoans(LocalDate.now(),pageable);
         } else if (searchRequest.getUserId()!=null) {
-            bookLoanPage=bookLoanRepository.findByUserId(searchRequest.getUserId(),pageable);
+            bookLoanPage=bookLoanRepository.findByUsersId(searchRequest.getUserId(),pageable);
         } else if (searchRequest.getBookId()!=null) {
             bookLoanPage=bookLoanRepository.findByBookId(searchRequest.getBookId(), pageable);
         } else if (searchRequest.getStatus()!=null) {

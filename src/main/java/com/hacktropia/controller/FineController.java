@@ -4,7 +4,6 @@ import com.hacktropia.domain.FineStatus;
 import com.hacktropia.domain.FineType;
 import com.hacktropia.payload.dto.FineDTO;
 import com.hacktropia.payload.request.CreateFineRequest;
-import com.hacktropia.payload.request.PaymentInitiateRequest;
 import com.hacktropia.payload.request.WaiveFineRequest;
 import com.hacktropia.payload.response.PageResponse;
 import com.hacktropia.payload.response.PaymentInitiateResponse;
@@ -72,5 +71,7 @@ public class FineController {
                 .getAllFines(status, type, userId, page, size);
         return ResponseEntity.ok(fines);
     }
+
 }
+
 

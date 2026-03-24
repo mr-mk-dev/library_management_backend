@@ -1,5 +1,7 @@
 package com.hacktropia.modal;
 
+import com.hacktropia.domain.BookLoanStatus;
+import com.hacktropia.domain.BookLoanType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,6 +31,7 @@ public class BookLoan {
     @ManyToOne
     private Book book;
 
+    @Enumerated(EnumType.STRING)
     private BookLoanType type;
 
     @Enumerated(EnumType.STRING)
@@ -78,19 +81,5 @@ public class BookLoan {
                 && renewalCount<maxRenewals;
     }
 
-}
-
-enum BookLoanType {
-    CHECKOUT,
-    RENEWAL,
-    RETURN,
-}
-
-enum BookLoanStatus {
-    CHECKED_OUT,
-    RETURNED,
-    OVERDUE,
-    LOST,
-    DAMAGED,
 }
 

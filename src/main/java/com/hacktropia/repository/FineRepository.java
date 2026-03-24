@@ -27,9 +27,9 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
             Pageable pageable
             );
 
-    List<Fine> findByUserId(Long userId);
+    List<Fine> findByUsersId(Long userId);
 
-    List<Fine> findByUserIdAndType(Long userId, FineType type);
+    List<Fine> findByUsersIdAndType(Long userId, FineType type);
 
 
 

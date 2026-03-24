@@ -26,11 +26,13 @@ public class Users {
 
     private String fullName;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private String phone;
 
-    private AuthProvider authProvider=AuthProvider.LOCAL;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider = AuthProvider.LOCAL;
 
     private String googleId;
 
@@ -47,6 +49,3 @@ public class Users {
 
 }
 
-enum UserRole {
-    USER, ADMIN
-}
