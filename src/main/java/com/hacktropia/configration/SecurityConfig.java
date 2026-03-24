@@ -27,6 +27,12 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS
                 ))
                 .authorizeHttpRequests(Authorize -> Authorize
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml"
+                        ).permitAll()
                         .requestMatchers("api/subscription-plans/admin/**").hasRole("ADMIN")
                         .requestMatchers("api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/**").authenticated()

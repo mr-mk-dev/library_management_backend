@@ -84,12 +84,15 @@ public class AuthServiceImpl implements AuthService {
         createdUsers.setLastLogin(LocalDateTime.now());
         createdUsers.setRole(UserRole.USER);
 
+        System.out.println("user : "+ createdUsers);
         Users savedUsers =userRepository.save(createdUsers);
         Authentication auth= new UsernamePasswordAuthenticationToken(
                 savedUsers.getEmail(), savedUsers.getPassword());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
+        System.out.println("good :" + auth);
         String jwt=jwtProvider.generateToken(auth);
+        System.out.println("error");
         AuthResponse response=new AuthResponse();
         response.setJwt(jwt);
         response.setTitle("Welcome "+ createdUsers.getFullName());
