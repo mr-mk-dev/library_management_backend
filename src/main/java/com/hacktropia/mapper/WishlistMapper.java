@@ -21,9 +21,9 @@ public class WishlistMapper {
         WishlistDTO dto=new WishlistDTO();
         dto.setId(wishlist.getId());
 
-        if(wishlist.getUser()!=null){
-            dto.setUserId(wishlist.getUser().getId());
-            dto.setUserFullName(wishlist.getUser().getFullName());
+        if(wishlist.getUsers()!=null){
+            dto.setUserId(wishlist.getUsers().getId());
+            dto.setUserFullName(wishlist.getUsers().getFullName());
         }
         if(wishlist.getBook()!=null){
             dto.setBook(bookMapper.toDTO(wishlist.getBook()));

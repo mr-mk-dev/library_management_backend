@@ -6,18 +6,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Users {
 
 
     @Id
@@ -47,4 +45,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+}
+
+enum UserRole {
+    USER, ADMIN
 }

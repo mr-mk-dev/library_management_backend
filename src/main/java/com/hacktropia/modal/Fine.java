@@ -23,7 +23,7 @@ public class Fine {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private User user;
+    private Users users;
 
     @ManyToOne
     private BookLoan bookLoan;
@@ -42,7 +42,7 @@ public class Fine {
     private String notes;
 
     @ManyToOne
-    private User waivedBy;
+    private Users waivedBy;
 
     @Column(name = "waived_at")
     private LocalDateTime waivedAt;
@@ -55,7 +55,7 @@ public class Fine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "processed_by_user_id")
-    private User processedBy;
+    private Users processedBy;
 
     @Column(name = "transaction_id", length = 100)
     private String transactionId;
@@ -76,7 +76,7 @@ public class Fine {
         this.paidAt=LocalDateTime.now();
 
     }
-    public void waive(User admin,String reason){
+    public void waive(Users admin, String reason){
         this.status=FineStatus.WAIVED;
         this.waivedBy=admin;
         this.waivedAt=LocalDateTime.now();

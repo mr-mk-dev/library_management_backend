@@ -2,7 +2,7 @@ package com.hacktropia.service.impl;
 
 import com.hacktropia.mapper.WishlistMapper;
 import com.hacktropia.modal.Book;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.modal.Wishlist;
 import com.hacktropia.payload.dto.WishlistDTO;
 import com.hacktropia.payload.response.PageResponse;
@@ -31,17 +31,17 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDTO addToWishlist(Long bookId, String notes) throws Exception {
-        User user=userService.getCurrentUser();
+        Users users =userService.getCurrentUser();
 
         Book book=bookRepository.findById(bookId)
                 .orElseThrow(()-> new Exception("Book not found"));
 
-        if(wishlistRepository.existsByUserIdAndBookId(user.getId(),bookId)){
+        if(wishlistRepository.existsByUserIdAndBookId(users.getId(),bookId)){
             throw new Exception("book is already in your wishlist");
         }
 
         Wishlist wishlist=new Wishlist();
-        wishlist.setUser(user);
+        wishlist.setUsers(users);
         wishlist.setBook(book);
         wishlist.setNotes(notes);
         Wishlist saved=wishlistRepository.save(wishlist);
@@ -51,8 +51,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public void removeFromWishlist(Long bookId) throws Exception {
-        User user=userService.getCurrentUser();
-        Wishlist wishlist=wishlistRepository.findByUserIdAndBookId(user.getId(), bookId);
+        Users users =userService.getCurrentUser();
+        Wishlist wishlist=wishlistRepository.findByUserIdAndBookId(users.getId(), bookId);
         if(wishlist==null){
             throw new Exception("book is not in your wishlist");
         }

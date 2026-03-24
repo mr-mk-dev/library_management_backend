@@ -1,7 +1,7 @@
 package com.hacktropia.service.impl;
 
 import com.hacktropia.domain.UserRole;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -25,14 +25,14 @@ public class DataInitializationComponent implements CommandLineRunner {
         String adminPassword="luv";
 
                 if(userRepository.findByEmail(adminEmail) == null){
-                    User user= User.builder()
+                    Users users = Users.builder()
                             .password(passwordEncoder.encode(adminPassword))
                             .email(adminEmail)
                             .fullName("Hacktropia")
                             .role(UserRole.ROLE_ADMIN)
                             .build();
 
-                    User admin=userRepository.save(user);
+                    Users admin=userRepository.save(users);
                 }
     }
 }

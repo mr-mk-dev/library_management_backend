@@ -6,8 +6,7 @@ import com.hacktropia.exception.BookException;
 import com.hacktropia.mapper.BookLoanMapper;
 import com.hacktropia.modal.Book;
 import com.hacktropia.modal.BookLoan;
-import com.hacktropia.modal.Subscription;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.BookLoanDTO;
 import com.hacktropia.payload.dto.SubscriptionDTO;
 import com.hacktropia.payload.request.BookLoanSearchRequest;
@@ -25,11 +24,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import javax.naming.Referenceable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -49,18 +46,18 @@ public class BookLoanServiceImpl implements BookLoanService {
     @Override
     public BookLoanDTO checkoutBook(CheckoutRequest checkoutRequest) throws Exception {
 
-        User user=userService.getCurrentUser();
+        Users users =userService.getCurrentUser();
 
 
-        return checkoutBookForUser(user.getId(),checkoutRequest);
+        return checkoutBookForUser(users.getId(),checkoutRequest);
     }
 
     @Override
     public BookLoanDTO checkoutBookForUser(Long userId, CheckoutRequest checkoutRequest) throws Exception {
 
-        User user=userService.findById(userId);
+        Users users =userService.findById(userId);
 
-        SubscriptionDTO subscription=subscriptionService.getUsersActiveSubscription(user.getId());
+        SubscriptionDTO subscription=subscriptionService.getUsersActiveSubscription(users.getId());
 
         Book book=bookRepository.findById(checkoutRequest.getBookId())
                 .orElseThrow(()-> new Exception("Book not found with id"+ checkoutRequest.getBookId()));
@@ -89,7 +86,7 @@ public class BookLoanServiceImpl implements BookLoanService {
 
         BookLoan bookLoan=BookLoan
                 .builder()
-                .user(user)
+                .users(users)
                 .book(book)
                 .type(BookLoanType.CHECKOUT)
                 .status(BookLoanStatus.CHECKED_OUT)
@@ -160,16 +157,16 @@ public class BookLoanServiceImpl implements BookLoanService {
 
     @Override
     public PageResponse<BookLoanDTO> getMyBookLoans(BookLoanStatus status, int page, int size) throws Exception {
-        User currentUser=userService.getCurrentUser();
+        Users currentUsers =userService.getCurrentUser();
         Page<BookLoan> bookLoanPage;
         if(status!=null){
             Pageable  pageable= PageRequest.of(page,size, Sort.by("dueDate").ascending());
             bookLoanPage=bookLoanRepository.findByStatusAndUser(
-                    status,currentUser,pageable
+                    status, currentUsers,pageable
             );
         }else {
             Pageable  pageable= PageRequest.of(page,size, Sort.by("createdAt").descending());
-            bookLoanPage=bookLoanRepository.findByUserId(currentUser.getId(),pageable);
+            bookLoanPage=bookLoanRepository.findByUserId(currentUsers.getId(),pageable);
 
         }
         return convertToPageResponse(bookLoanPage);

@@ -5,7 +5,7 @@ import com.hacktropia.mapper.BookReviewMapper;
 import com.hacktropia.modal.Book;
 import com.hacktropia.modal.BookLoan;
 import com.hacktropia.modal.BookReview;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.BookReviewDTO;
 import com.hacktropia.payload.request.CreateReviewRequest;
 import com.hacktropia.payload.request.updateReviewRequest;
@@ -37,18 +37,18 @@ public class BookReviewServiceImpl implements BookReviewService {
 
     @Override
     public BookReviewDTO createReview(CreateReviewRequest request) throws Exception {
-        User user=userService.getCurrentUser();
+        Users users =userService.getCurrentUser();
         Book book=bookRepository.findById(request.getBookId())
                 .orElseThrow(()-> new Exception("book not found!"));
-        if(bookReviewRepository.existsByUserIdAndBookId(user.getId(),book.getId())){
+        if(bookReviewRepository.existsByUserIdAndBookId(users.getId(),book.getId())){
             throw new Exception("you have already reviewed this book!");
         }
-        boolean hasReadBook=hasUserReadBook(user.getId(),book.getId());
+        boolean hasReadBook=hasUserReadBook(users.getId(),book.getId());
         if(!hasReadBook){
             throw new Exception("You have not read this book!");
         }
         BookReview bookReview=new BookReview();
-        bookReview.setUser(user);
+        bookReview.setUsers(users);
         bookReview.setBook(book);
         bookReview.setRating(request.getRating());
         bookReview.setReviewText(request.getReviewText());
@@ -59,10 +59,10 @@ public class BookReviewServiceImpl implements BookReviewService {
 
     @Override
     public BookReviewDTO updateReview(Long reviewId, updateReviewRequest request) throws Exception {
-       User user=userService.getCurrentUser();
+       Users users =userService.getCurrentUser();
        BookReview bookReview=bookReviewRepository.findById(reviewId)
                .orElseThrow(()-> new Exception("review not found!"));
-       if(!bookReview.getUser().getId().equals(user.getId())){
+       if(!bookReview.getUsers().getId().equals(users.getId())){
            throw new Exception("You have not reviewed this book!");
        }
        bookReview.setReviewText(request.getReviewText());
@@ -75,10 +75,10 @@ public class BookReviewServiceImpl implements BookReviewService {
     @Override
     public void deleteReview(Long reviewId) throws Exception {
 
-        User currentUser=userService.getCurrentUser();
+        Users currentUsers =userService.getCurrentUser();
         BookReview bookReview=bookReviewRepository.findById(reviewId)
                 .orElseThrow(()-> new Exception("Review not found with id: "+ reviewId));
-        if(!bookReview.getUser().getId().equals(currentUser.getId())){
+        if(!bookReview.getUsers().getId().equals(currentUsers.getId())){
             throw new Exception("You can only delete your own reviews");
         }
         bookReviewRepository.delete(bookReview);
@@ -116,7 +116,7 @@ public class BookReviewServiceImpl implements BookReviewService {
     private boolean hasUserReadBook(Long userId, Long bookId){
         List<BookLoan> bookLoans=bookLoanRepository.findByBookId(bookId);
         return bookLoans.stream()
-                .anyMatch(loan->loan.getUser().getId().equals(userId) &&
+                .anyMatch(loan->loan.getUsers().getId().equals(userId) &&
                         loan.getStatus()== BookLoanStatus.RETURNED);
     }
 }

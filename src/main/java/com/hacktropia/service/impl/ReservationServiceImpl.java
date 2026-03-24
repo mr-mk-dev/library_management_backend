@@ -6,7 +6,7 @@ import com.hacktropia.domain.UserRole;
 import com.hacktropia.mapper.ReservationMapper;
 import com.hacktropia.modal.Book;
 import com.hacktropia.modal.Reservation;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.ReservationDTO;
 import com.hacktropia.payload.request.CheckoutRequest;
 import com.hacktropia.payload.request.ReservationRequest;
@@ -19,7 +19,6 @@ import com.hacktropia.service.BookLoanService;
 import com.hacktropia.service.ReservationService;
 import com.hacktropia.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +41,9 @@ public class ReservationServiceImpl implements ReservationService {
     int MAX_RESERVATIONS=5;
     @Override
     public ReservationDTO createReservation(ReservationRequest reservationRequest) throws Exception {
-        User user=userService.getCurrentUser();
+        Users users =userService.getCurrentUser();
 
-        return createReservationForUser(reservationRequest,user.getId());
+        return createReservationForUser(reservationRequest, users.getId());
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
            throw new Exception("you already have loan on this book");
        }
 
-       User user=userService.getCurrentUser();
+       Users users =userService.getCurrentUser();
        Book book=bookRepository.findById(reservationRequest.getBookId())
                .orElseThrow(()-> new Exception("book not found"));
        if(reservationRepository.hasActiveReservation(userId,book.getId())){
@@ -74,7 +73,7 @@ public class ReservationServiceImpl implements ReservationService {
        }
 
         Reservation reservation=new Reservation();
-       reservation.setUser(user);
+       reservation.setUsers(users);
        reservation.setBook(book);
        reservation.setStatus(ReservationStatus.PENDING);
        reservation.setReservedAt(LocalDateTime.now());
@@ -96,9 +95,9 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation=reservationRepository.findById(reservationId)
                 .orElseThrow(()-> new Exception("Reservation not found with ID: "));
 
-        User currentUser=userService.getCurrentUser();
-        if(!reservation.getUser().getId().equals(currentUser.getId())
-        && currentUser.getRole()!= UserRole.ROLE_ADMIN){
+        Users currentUsers =userService.getCurrentUser();
+        if(!reservation.getUsers().getId().equals(currentUsers.getId())
+        && currentUsers.getRole()!= UserRole.ROLE_ADMIN){
             throw new Exception("You can only cancel your own reservations");
         }
         if(!reservation.canBeCancelled()){
@@ -128,7 +127,7 @@ public class ReservationServiceImpl implements ReservationService {
         request.setBookId(reservation.getBook().getId());
         request.setNotes("Assign Booked by Admin");
 
-        bookLoanService.checkoutBookForUser(reservation.getUser().getId(),request);
+        bookLoanService.checkoutBookForUser(reservation.getUsers().getId(),request);
 
         return reservationMapper.toDTO(savedReservation);
     }
@@ -136,8 +135,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public PageResponse<ReservationDTO> getMyReservations(ReservationSearchRequest searchRequest) throws Exception {
 
-        User user=userService.getCurrentUser();
-        searchRequest.setBookId(user.getId());
+        Users users =userService.getCurrentUser();
+        searchRequest.setBookId(users.getId());
         return searchReservations(searchRequest);
     }
 

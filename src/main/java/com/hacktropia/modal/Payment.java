@@ -23,7 +23,7 @@ public class Payment {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Users users;
 
     @ManyToOne
     private Subscription subscription;

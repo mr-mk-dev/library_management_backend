@@ -22,7 +22,7 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Users users;
 
     @ManyToOne
     private Book book;

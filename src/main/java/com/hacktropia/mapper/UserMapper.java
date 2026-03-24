@@ -1,6 +1,6 @@
 package com.hacktropia.mapper;
 
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
@@ -12,40 +12,40 @@ import java.util.stream.Collectors;
 @Service
 public class UserMapper {
 
-    public static UserDTO toDTO(User user){
+    public static UserDTO toDTO(Users users){
         UserDTO userDTO=new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFullName(user.getFullName());
-        userDTO.setPhone(user.getPhone());
-        userDTO.setLastLogin(user.getLastLogin());
-        userDTO.setRole(user.getRole());
+        userDTO.setId(users.getId());
+        userDTO.setEmail(users.getEmail());
+        userDTO.setFullName(users.getFullName());
+        userDTO.setPhone(users.getPhone());
+        userDTO.setLastLogin(users.getLastLogin());
+        userDTO.setRole(users.getRole());
 
         return userDTO;
     }
 
-    public static List<UserDTO> toDTOList(List<User> users){
+    public static List<UserDTO> toDTOList(List<Users> users){
         return users.stream()
                 .map(UserMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    public static Set<UserDTO> toDTOSet(Set<User> users){
+    public static Set<UserDTO> toDTOSet(Set<Users> users){
         return users.stream()
                 .map(UserMapper::toDTO)
                 .collect(Collectors.toSet());
     }
 
-    public static User toEntity(UserDTO userDTO){
-        User createdUser=new User();
+    public static Users toEntity(UserDTO userDTO){
+        Users createdUsers =new Users();
 //        createdUser.setId(user.getId());
-        createdUser.setEmail(userDTO.getEmail());
-        createdUser.setPassword(userDTO.getPassword());
-        createdUser.setCreatedAt(LocalDateTime.now());
-        createdUser.setFullName(userDTO.getFullName());
-        createdUser.setPhone(userDTO.getPhone());
-        createdUser.setRole(userDTO.getRole());
+        createdUsers.setEmail(userDTO.getEmail());
+        createdUsers.setPassword(userDTO.getPassword());
+        createdUsers.setCreatedAt(LocalDateTime.now());
+        createdUsers.setFullName(userDTO.getFullName());
+        createdUsers.setPhone(userDTO.getPhone());
+        createdUsers.setRole(userDTO.getRole());
 
-        return createdUser;
+        return createdUsers;
     }
 
 }

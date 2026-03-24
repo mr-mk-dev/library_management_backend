@@ -3,7 +3,7 @@ package com.hacktropia.service.gateway;
 import com.hacktropia.domain.PaymentType;
 import com.hacktropia.modal.Payment;
 import com.hacktropia.modal.SubscriptionPlan;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.response.PaymentLinkResponse;
 import com.hacktropia.service.SubscriptionPlanService;
 import com.razorpay.PaymentLink;
@@ -29,7 +29,7 @@ public class RazorpayService {
     private String callbackBaseUrl;
 
 
-    public PaymentLinkResponse createPaymentLink(User user, Payment payment){
+    public PaymentLinkResponse createPaymentLink(Users users, Payment payment){
 
         try{
             RazorpayClient razorpayClient= new RazorpayClient(razorpayKeyId,razorpayKeySecret);
@@ -42,17 +42,17 @@ public class RazorpayService {
             paymentLinkRequest.put("description", payment.getDescription());
 
             JSONObject customer=new JSONObject();
-            customer.put("name",user.getFullName());
-            customer.put("email",user.getEmail());
-            if(user.getPhone()!=null){
-                customer.put("contact", user.getPhone());
+            customer.put("name", users.getFullName());
+            customer.put("email", users.getEmail());
+            if(users.getPhone()!=null){
+                customer.put("contact", users.getPhone());
            }
 
             paymentLinkRequest.put("customer", customer);
 
             JSONObject notify=new JSONObject();
             notify.put("email",true);
-            notify.put("sms",user.getPhone()!=null);
+            notify.put("sms", users.getPhone()!=null);
             paymentLinkRequest.put("notify",notify);
 
             paymentLinkRequest.put("reminder_enable", true);
@@ -62,7 +62,7 @@ public class RazorpayService {
             paymentLinkRequest.put("callback_method","get");
 
             JSONObject notes=new JSONObject();
-            notes.put("user_id",user.getId());
+            notes.put("user_id", users.getId());
             notes.put("payment_id",payment.getId());
 
             if(payment.getPaymentType()== PaymentType.MEMBERSHIP){

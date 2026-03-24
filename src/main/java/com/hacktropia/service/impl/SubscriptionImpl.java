@@ -6,7 +6,7 @@ import com.hacktropia.exception.SubscriptionException;
 import com.hacktropia.mapper.SubscriptionMapper;
 import com.hacktropia.modal.Subscription;
 import com.hacktropia.modal.SubscriptionPlan;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.SubscriptionDTO;
 import com.hacktropia.payload.request.PaymentInitiateRequest;
 import com.hacktropia.payload.response.PaymentInitiateResponse;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,20 +36,20 @@ public class SubscriptionImpl implements SubscriptionService {
     @Override
     public PaymentInitiateResponse subscribe(SubscriptionDTO subscriptionDTO) throws Exception {
 
-        User user= userService.getCurrentUser();
+        Users users = userService.getCurrentUser();
         SubscriptionPlan plan=subscriptionPlanRepository
                 .findById(subscriptionDTO.getPlanId()).orElseThrow(
                         ()-> new Exception("Plan not found!")
                 );
 
-        Subscription subscription=subscriptionMapper.toEntity(subscriptionDTO,plan,user);
+        Subscription subscription=subscriptionMapper.toEntity(subscriptionDTO,plan, users);
         subscription.initializeFromPlan();
         subscription.setIsActive(false);
         Subscription savedSubscription=subscriptionRepository.save(subscription);
 
         PaymentInitiateRequest paymentInitiateRequest=PaymentInitiateRequest
                 .builder()
-                .userId(user.getId())
+                .userId(users.getId())
                 .subscriptionId(subscription.getId())
                 .paymentType(PaymentType.MEMBERSHIP)
                 .gateway(PaymentGateway.RAZORPAY)
@@ -62,9 +61,9 @@ public class SubscriptionImpl implements SubscriptionService {
 
     @Override
     public SubscriptionDTO getUsersActiveSubscription(Long UserId) throws Exception {
-        User user=userService.getCurrentUser();
+        Users users =userService.getCurrentUser();
         Subscription subscription=subscriptionRepository
-                .findActiveSubscriptionByUserId(user.getId(), LocalDate.now())
+                .findActiveSubscriptionByUserId(users.getId(), LocalDate.now())
                 .orElseThrow(()-> new SubscriptionException("no active subscription found!"));
         return subscriptionMapper.toDTO(subscription);
     }

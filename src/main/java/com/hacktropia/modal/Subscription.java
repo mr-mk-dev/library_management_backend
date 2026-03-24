@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +23,7 @@ public class Subscription {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private User user;
+    private Users users;
 
     @ManyToOne
     @JoinColumn(nullable = false)

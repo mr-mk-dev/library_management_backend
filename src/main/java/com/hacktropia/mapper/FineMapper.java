@@ -22,10 +22,10 @@ public class FineMapper {
             }
         }
 
-        if(fine.getUser()!=null){
-            dto.setUserId(fine.getUser().getId());
-            dto.setUserName(fine.getUser().getFullName());
-            dto.setUserEmail(fine.getUser().getEmail());
+        if(fine.getUsers()!=null){
+            dto.setUserId(fine.getUsers().getId());
+            dto.setUserName(fine.getUsers().getFullName());
+            dto.setUserEmail(fine.getUsers().getEmail());
         }
 
         dto.setType(fine.getType());

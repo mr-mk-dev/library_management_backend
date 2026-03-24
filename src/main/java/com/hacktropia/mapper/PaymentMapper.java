@@ -4,8 +4,6 @@ import com.hacktropia.modal.Payment;
 import com.hacktropia.payload.dto.PaymentDTO;
 import org.springframework.stereotype.Component;
 
-import java.beans.ParameterDescriptor;
-
 @Component
 public class PaymentMapper {
 
@@ -16,10 +14,10 @@ public class PaymentMapper {
         PaymentDTO dto=new PaymentDTO();
         dto.setId(payment.getId());
 
-        if(payment.getUser()!=null){
-            dto.setUserId(payment.getUser().getId());
-            dto.setUserName(payment.getUser().getFullName());
-            dto.setUserEmail(payment.getUser().getEmail());
+        if(payment.getUsers()!=null){
+            dto.setUserId(payment.getUsers().getId());
+            dto.setUserName(payment.getUsers().getFullName());
+            dto.setUserEmail(payment.getUsers().getEmail());
         }
 
 //        if(payment.getBookLoan()!=null){

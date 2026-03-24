@@ -1,10 +1,9 @@
 package com.hacktropia.mapper;
 
-import com.hacktropia.domain.UserRole;
 import com.hacktropia.exception.SubscriptionException;
 import com.hacktropia.modal.Subscription;
 import com.hacktropia.modal.SubscriptionPlan;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.SubscriptionDTO;
 import com.hacktropia.repository.SubscriptionPlanRepository;
 import com.hacktropia.repository.UserRepository;
@@ -29,10 +28,10 @@ public class SubscriptionMapper {
         SubscriptionDTO dto= new SubscriptionDTO();
         dto.setId(subscription.getId());
 
-        if(subscription.getUser() != null){
-            dto.setUserId(subscription.getUser().getId());
-            dto.setUserName(subscription.getUser().getEmail());
-            dto.setUserEmail(subscription.getUser().getEmail());
+        if(subscription.getUsers() != null){
+            dto.setUserId(subscription.getUsers().getId());
+            dto.setUserName(subscription.getUsers().getEmail());
+            dto.setUserEmail(subscription.getUsers().getEmail());
         }
 
         if(subscription.getPlan()!=null){
@@ -59,14 +58,14 @@ public class SubscriptionMapper {
         return dto;
     }
 
-    public Subscription toEntity(SubscriptionDTO dto, SubscriptionPlan plan, User user) throws SubscriptionException {
+    public Subscription toEntity(SubscriptionDTO dto, SubscriptionPlan plan, Users users) throws SubscriptionException {
         if(dto==null){
             return null;
         }
 
         Subscription subscription=new Subscription();
         subscription.setId(dto.getId());
-        subscription.setUser(user);
+        subscription.setUsers(users);
         subscription.setPlan(plan);
         subscription.setNotes(dto.getNotes());
 

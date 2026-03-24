@@ -13,8 +13,8 @@ public class BookReviewMapper {
         }
         return BookReviewDTO.builder()
                 .id(bookReview.getId())
-                .userId(bookReview.getUser().getId())
-                .userName(bookReview.getUser().getFullName())
+                .userId(bookReview.getUsers().getId())
+                .userName(bookReview.getUsers().getFullName())
                 .bookId(bookReview.getBook().getId())
                 .bookTitle(bookReview.getBook().getTitle())
                 .rating(bookReview.getRating())

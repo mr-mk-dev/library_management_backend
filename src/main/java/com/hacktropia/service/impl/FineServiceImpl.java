@@ -7,9 +7,8 @@ import com.hacktropia.domain.PaymentType;
 import com.hacktropia.mapper.FineMapper;
 import com.hacktropia.modal.BookLoan;
 import com.hacktropia.modal.Fine;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.FineDTO;
-import com.hacktropia.payload.dto.UserDTO;
 import com.hacktropia.payload.request.CreateFineRequest;
 import com.hacktropia.payload.request.PaymentInitiateRequest;
 import com.hacktropia.payload.request.WaiveFineRequest;
@@ -26,10 +25,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.FacesRequestAttributes;
 
 import java.time.LocalDateTime;
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +46,7 @@ public class FineServiceImpl implements FineService {
 
         Fine fine=Fine.builder()
                 .bookLoan(bookLoan)
-                .user(bookLoan.getUser())
+                .users(bookLoan.getUsers())
                 .type(createFineRequest.getType())
                 .amount(createFineRequest.getAmount())
                 .status(FineStatus.PENDING)
@@ -72,10 +69,10 @@ public class FineServiceImpl implements FineService {
             throw new Exception("fine waived");
         }
 
-        User user= userService.getCurrentUser();
+        Users users = userService.getCurrentUser();
         PaymentInitiateRequest request= PaymentInitiateRequest
                 .builder()
-                .userId(user.getId())
+                .userId(users.getId())
                 .fineId(fine.getId())
                 .paymentType(PaymentType.FINE)
                 .gateway(PaymentGateway.RAZORPAY)
@@ -109,7 +106,7 @@ public class FineServiceImpl implements FineService {
         if(fine.getStatus()==FineStatus.PAID){
             throw new Exception("Fine has already been paid and cannot be waived");
         }
-        User currentAdmin=userService.getCurrentUser();
+        Users currentAdmin=userService.getCurrentUser();
         fine.waive(currentAdmin,waiveFineRequest.getReason());
 
         Fine savedFine=fineRepository.save(fine);
@@ -118,23 +115,23 @@ public class FineServiceImpl implements FineService {
 
     @Override
     public List<FineDTO> getMyFines(FineStatus status, FineType type) throws Exception {
-        User currentUser=userService.getCurrentUser();
+        Users currentUsers =userService.getCurrentUser();
         List<Fine> fines;
 
         if(status != null && type!= null){
-            fines=fineRepository.findByUserId(currentUser.getId()).stream()
+            fines=fineRepository.findByUserId(currentUsers.getId()).stream()
                     .filter(f -> f.getStatus()==status && f.getType()==type)
                     .collect(Collectors.toList());
         } else if (status!=null) {
-            fines=fineRepository.findByUserId(currentUser.getId()).stream()
+            fines=fineRepository.findByUserId(currentUsers.getId()).stream()
                     .filter(f-> f.getStatus()==status)
                     .collect(Collectors.toList());
 
         }else if(type!=null){
-            fines=fineRepository.findByUserIdAndType(currentUser.getId(),type);
+            fines=fineRepository.findByUserIdAndType(currentUsers.getId(),type);
 
         }else {
-            fines=fineRepository.findByUserId(currentUser.getId());
+            fines=fineRepository.findByUserId(currentUsers.getId());
         }
         return fines.stream().map(
                 fineMapper::toDTO

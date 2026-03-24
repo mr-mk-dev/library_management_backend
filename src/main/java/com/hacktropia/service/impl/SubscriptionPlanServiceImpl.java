@@ -2,7 +2,7 @@ package com.hacktropia.service.impl;
 
 import com.hacktropia.mapper.SubscriptionPlanMapper;
 import com.hacktropia.modal.SubscriptionPlan;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.SubscriptionPlanDTO;
 import com.hacktropia.repository.SubscriptionPlanRepository;
 import com.hacktropia.service.SubscriptionPlanService;
@@ -30,9 +30,9 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
         }
         SubscriptionPlan plan=planMapper.toEntity(planDTO);
 
-        User currentUser=userService.getCurrentUser();
-        plan.setCreatedBy(currentUser.getFullName());
-        plan.setUpdatedBy(currentUser.getFullName());
+        Users currentUsers =userService.getCurrentUser();
+        plan.setCreatedBy(currentUsers.getFullName());
+        plan.setUpdatedBy(currentUsers.getFullName());
        SubscriptionPlan savedPlan= planRepository.save(plan);
         return planMapper.toDTO(savedPlan);
     }
@@ -43,8 +43,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
                 ()->new Exception("Plan not found!")
         );
         planMapper.updateEntity(existingPlan,planDTO);
-        User currentUser=userService.getCurrentUser();
-        existingPlan.setUpdatedBy(currentUser.getFullName());
+        Users currentUsers =userService.getCurrentUser();
+        existingPlan.setUpdatedBy(currentUsers.getFullName());
         SubscriptionPlan updatedPlan=planRepository.save(existingPlan);
 
         return planMapper.toDTO(updatedPlan);

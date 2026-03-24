@@ -2,7 +2,7 @@ package com.hacktropia.repository;
 
 import com.hacktropia.domain.BookLoanStatus;
 import com.hacktropia.modal.BookLoan;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ import java.util.List;
 public interface BookLoanRepository extends JpaRepository<BookLoan, Long> {
     Page<BookLoan> findByUserId(Long userId, Pageable pageable);
 
-    Page<BookLoan> findByStatusAndUser(BookLoanStatus status, User user, Pageable pageable);
+    Page<BookLoan> findByStatusAndUser(BookLoanStatus status, Users users, Pageable pageable);
 
     Page<BookLoan> findByStatus(BookLoanStatus status, Pageable pageable);
 

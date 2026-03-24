@@ -1,9 +1,9 @@
 package com.hacktropia.repository;
 
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<Users,Long> {
 
-    User findByEmail(String email);
+    Users findByEmail(String email);
 }

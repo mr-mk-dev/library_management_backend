@@ -1,6 +1,6 @@
 package com.hacktropia.controller;
 
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.UserDTO;
 import com.hacktropia.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile() throws Exception {
+    public ResponseEntity<Users> getUserProfile() throws Exception {
         return ResponseEntity.ok(
                 userService.getCurrentUser()
         );

@@ -19,10 +19,10 @@ public class BookLoanMapper {
         BookLoanDTO dto=new BookLoanDTO();
         dto.setId(bookLoan.getId());
 
-        if(bookLoan.getUser()!=null){
-            dto.setUserId(bookLoan.getUser().getId());
-            dto.setUserName(bookLoan.getUser().getFullName());
-            dto.setUserEmail(bookLoan.getUser().getEmail());
+        if(bookLoan.getUsers()!=null){
+            dto.setUserId(bookLoan.getUsers().getId());
+            dto.setUserName(bookLoan.getUsers().getFullName());
+            dto.setUserEmail(bookLoan.getUsers().getEmail());
         }
 
         if(bookLoan.getBook()!=null){

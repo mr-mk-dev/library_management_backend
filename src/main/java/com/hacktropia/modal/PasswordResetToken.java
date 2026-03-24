@@ -2,7 +2,6 @@ package com.hacktropia.modal;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ManyToAny;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +22,7 @@ public class PasswordResetToken {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users users;
 
     @Column(nullable = false)
     private LocalDateTime expiryDate;

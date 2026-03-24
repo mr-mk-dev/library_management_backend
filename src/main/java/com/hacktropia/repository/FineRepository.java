@@ -15,7 +15,7 @@ public interface FineRepository extends JpaRepository<Fine, Long> {
 
     @Query("""
         SELECT f FROM Fine f 
-        WHERE (:userId IS NULL OR f.user.id = :userId)
+        WHERE (:userId IS NULL OR f.users.id = :userId)
         AND (:status IS NULL OR f.status = :status)
         AND(:type IS NULL OR f.type = :type)
         ORDER BY f.createdAt DESC

@@ -6,7 +6,7 @@ import com.hacktropia.event.publisher.PaymentEventPublisher;
 import com.hacktropia.mapper.PaymentMapper;
 import com.hacktropia.modal.Payment;
 import com.hacktropia.modal.Subscription;
-import com.hacktropia.modal.User;
+import com.hacktropia.modal.Users;
 import com.hacktropia.payload.dto.PaymentDTO;
 import com.hacktropia.payload.request.PaymentInitiateRequest;
 import com.hacktropia.payload.request.PaymentVerifyRequest;
@@ -19,13 +19,10 @@ import com.hacktropia.service.PaymentService;
 import com.hacktropia.service.gateway.RazorpayService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.boot.autoconfigure.amqp.RabbitStreamTemplateConfigurer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -43,10 +40,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentInitiateResponse initiatePayment(PaymentInitiateRequest request) throws Exception {
 
-        User user=userRepository.findById(request.getUserId()).get();
+        Users users =userRepository.findById(request.getUserId()).get();
 
         Payment payment=new Payment();
-        payment.setUser(user);
+        payment.setUsers(users);
         payment.setPaymentType(request.getPaymentType());
         payment.setGateway(request.getGateway());
         payment.setAmount(request.getAmount());
@@ -65,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentInitiateResponse response=new PaymentInitiateResponse();
         if(request.getGateway()== PaymentGateway.RAZORPAY){
             PaymentLinkResponse paymentLinkResponse=razorpayService.createPaymentLink(
-                    user,payment
+                    users,payment
             );
             response=PaymentInitiateResponse.builder()
                     .paymentId(payment.getId())

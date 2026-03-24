@@ -17,10 +17,10 @@ public class ReservationMapper {
         ReservationDTO dto=new ReservationDTO();
         dto.setId(reservation.getId());
 
-        if(reservation.getUser()!=null){
-            dto.setUserId(reservation.getUser().getId());
-            dto.setUserName(reservation.getUser().getFullName());
-            dto.setUserEmail(reservation.getUser().getEmail());
+        if(reservation.getUsers()!=null){
+            dto.setUserId(reservation.getUsers().getId());
+            dto.setUserName(reservation.getUsers().getFullName());
+            dto.setUserEmail(reservation.getUsers().getEmail());
         }
 
         if(reservation.getBook()!=null){
