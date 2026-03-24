@@ -31,7 +31,7 @@ public class BookController {
     }
 
 
-    @PostMapping
+    @PostMapping({"/{id}"})
     public ResponseEntity<BookDTO>getBookById(
             @PathVariable Long id) throws BookException {
 

@@ -1,4 +1,4 @@
-package com.hacktropia.configrations;
+package com.hacktropia.configration;
 
 public class JwtConstant {
     public static final String JWT_HEADER="Authorization";

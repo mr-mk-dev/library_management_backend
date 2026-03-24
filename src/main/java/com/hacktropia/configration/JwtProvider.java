@@ -1,4 +1,4 @@
-package com.hacktropia.configrations;
+package com.hacktropia.configration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -60,7 +60,7 @@ public class BookDTO {
     @NotNull(message = "Available copies is mandatory")
     private Integer availableCopies;
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "Price cannot be negative")
+    @DecimalMin(value = "0.0", message = "Price cannot be negative")
     @Digits(integer = 8, fraction = 2, message = "Price must have at most 8 integer digits and 2 integer digits atleast")
     private BigDecimal price;
 

@@ -1,6 +1,6 @@
 package com.hacktropia.service.impl;
 
-import com.hacktropia.configrations.JwtProvider;
+import com.hacktropia.configration.JwtProvider;
 import com.hacktropia.domain.UserRole;
 import com.hacktropia.exception.UserException;
 import com.hacktropia.mapper.UserMapper;
