@@ -36,15 +36,14 @@ public class BookController {
     }
 
 
-    @PostMapping({"/{id}"})
+    @GetMapping("/{id}")
     @Operation(summary = "Get book by ID", description = "Returns a single book by its ID")
-    public ResponseEntity<BookDTO>getBookById(
+    public ResponseEntity<BookDTO> getBookById(
             @Parameter(description = "Book ID") @PathVariable Long id) throws BookException {
 
-        BookDTO book=bookService.getBookById(id);
+        BookDTO book = bookService.getBookById(id);
         return ResponseEntity.ok(book);
     }
-
     @PutMapping("/{id}")
     @Operation(summary = "Update a book", description = "Updates book details by ID. Only non-null fields are updated.")
     public ResponseEntity<BookDTO>updateBook(
