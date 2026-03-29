@@ -1,7 +1,5 @@
 package com.hacktropia.configration;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,23 +43,20 @@ public class SecurityConfig {
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
-        return new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(@NotNull HttpServletRequest request) {
-                CorsConfiguration cfg =new CorsConfiguration();
-                cfg.setAllowCredentials(true);
-                cfg.setAllowedOrigins(
-                        Arrays.asList(
-                                "http://localhost:5173/",
-                                "https://library.com"
-                        )
-                );
-                cfg.setAllowedMethods(Collections.singletonList("*"));
-                cfg.setAllowedHeaders(Collections.singletonList("*"));
-                cfg.setExposedHeaders(Collections.singletonList("Authorization"));
-                cfg.setMaxAge(360L);
-                return cfg;
-            }
+        return request -> {
+            CorsConfiguration cfg =new CorsConfiguration();
+            cfg.setAllowCredentials(true);
+            cfg.setAllowedOrigins(
+                    Arrays.asList(
+                            "http://localhost:5173/",
+                            "https://library.com"
+                    )
+            );
+            cfg.setAllowedMethods(Collections.singletonList("*"));
+            cfg.setAllowedHeaders(Collections.singletonList("*"));
+            cfg.setExposedHeaders(Collections.singletonList("Authorization"));
+            cfg.setMaxAge(360L);
+            return cfg;
         };
     }
 

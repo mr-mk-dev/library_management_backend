@@ -92,7 +92,6 @@ public class BookController {
 
         PageResponse<BookDTO> books= bookService.searchBooksWithFilters(searchRequest);
         return ResponseEntity.ok(books);
-
     }
 
     @PostMapping("/search")
